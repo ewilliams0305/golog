@@ -11,4 +11,22 @@ const (
 	Fatal       LogLevel = 5
 )
 
-type verbosity string
+func (s LogLevel) ToString() string {
+	switch s {
+	case Verbose:
+		return "VRB"
+	case Debug:
+		return "DBG"
+	case Information:
+		return "INF"
+	case Warn:
+		return "WRN"
+	case Error:
+		return "ERR"
+	case Fatal:
+		return "FTL"
+	}
+	return "UNKNOWN"
+}
+
+//type verbosity string
