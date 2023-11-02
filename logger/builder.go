@@ -1,30 +1,54 @@
 package golog
 
-type loggerConfiguration interface {
-	Create() loggerWriter
+type configuration struct {
+	level  LogLevel
+	format formatter
 }
 
-type loggerWriter interface {
-	WriteTo(sink *SinkWriter) Logger
-}
+type formatter string
 
 func LoggingConfiguration() loggerConfiguration {
 
 	return &GoLog{}
 }
 
-func (gl *GoLog) Create() loggerWriter {
+type loggerConfiguration interface {
+	Configure(minimuLevel LogLevel) loggerWriter
+}
+
+type createWriters interface {
+	loggerWriter
+	createLogger
+}
+
+type loggerWriter interface {
+	WriteTo(sink SinkWriter) createWriters
+}
+
+type createLogger interface {
+	CreateLogger() Logger
+}
+
+// Function Implementations
+
+func (gl *GoLog) Configure(minimuLevel LogLevel) loggerWriter {
 
 	// Do the setup of the required internals
-
+	gl.configuration = configuration{
+		level:  minimuLevel,
+		format: "",
+	}
 	return gl
 }
 
-func (gl *GoLog) WriteTo(sink *SinkWriter) Logger {
+func (gl *GoLog) WriteTo(sink SinkWriter) createWriters {
 	// Add the sink to the writers
 
-	s := append(gl.sinks, *sink)
-	println(s)
+	gl.sinks = append(gl.sinks, sink)
+	return gl
+}
+
+func (gl *GoLog) CreateLogger() Logger {
 
 	return gl
 }
