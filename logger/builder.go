@@ -19,10 +19,20 @@ type loggerConfiguration interface {
 type createWriters interface {
 	loggerWriter
 	createLogger
+	writerLevel
+	writerFormat
 }
 
 type loggerWriter interface {
 	WriteTo(sink SinkWriter) createWriters
+}
+
+type writerLevel interface {
+	MinimuLevel(level LogLevel) createWriters
+}
+
+type writerFormat interface {
+	WithFormat(messageTemplate string) createWriters
 }
 
 type createLogger interface {
@@ -42,9 +52,17 @@ func (gl *GoLog) Configure(minimuLevel LogLevel) loggerWriter {
 }
 
 func (gl *GoLog) WriteTo(sink SinkWriter) createWriters {
-	// Add the sink to the writers
-
 	gl.sinks = append(gl.sinks, sink)
+	return gl
+}
+
+func (gl *GoLog) MinimuLevel(level LogLevel) createWriters {
+	// TODO: Add level restriction to the SINK
+	return gl
+}
+
+func (gl *GoLog) WithFormat(messageTemplate string) createWriters {
+	// TODO: Add Message Template to the SINK
 	return gl
 }
 

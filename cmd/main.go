@@ -9,12 +9,13 @@ import (
 
 func main() {
 
-	sink := &FmtPrinter{}
+	sink1 := &FmtPrinter{}
+	sink2 := &FmtPrinter{}
 
 	logger := golog.LoggingConfiguration().
 		Configure(golog.Information).
-		WriteTo(sink).
-		WriteTo(sink).
+		WriteTo(sink1).MinimuLevel(golog.Debug).WithFormat("").
+		WriteTo(sink2).MinimuLevel(golog.Information).
 		CreateLogger()
 
 	logger.Verbose("Verbose Message", nil)
