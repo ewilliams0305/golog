@@ -57,7 +57,6 @@ type Logger interface {
 	Fatal(message string, err error, props properties)
 }
 
-type properties map[string]string
 
 
 
