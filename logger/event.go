@@ -28,6 +28,8 @@ type FormatMessage interface {
 	RenderMessage() string
 }
 
+// Converts a logevent to a string to display on an output. 
+// TODO: Provide message template to facilitate formatting. 
 func (e *logEvent) RenderMessage() string {
 	return fmt.Sprintf("[%s %v] %s", e.level.ToString(), e.timestamp.Format("2006-01-02T15:04:05"), e.message)
 }
