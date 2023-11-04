@@ -22,6 +22,8 @@ type logEvent struct {
 // Properties to use in a structured log event. 
 type properties map[string]any
 
+// Renders a message as a string. 
+// The format interface is used to generate a string from a log event
 type FormatMessage interface {
 	RenderMessage() string
 }
