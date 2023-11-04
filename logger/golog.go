@@ -4,6 +4,29 @@ The golog framework helps to:
 - Describe a log message with structure 
 - Render the messgae
 - Abstract the output of the messages to different and or multiple destinations. 
+
+Example: BYOL bring your own logger
+
+func main() {
+
+	sink1 := &FmtPrinter{}
+	sink2 := &FmtPrinter{}
+
+	logger := golog.LoggingConfiguration().
+		Configure(golog.Information).
+		WriteTo(sink1).MinimuLevel(golog.Debug).WithFormat("").
+		WriteTo(sink2).MinimuLevel(golog.Information).
+		CreateLogger()
+
+	logger.Verbose("Verbose Message", nil)
+	logger.Debug("Debug Message", nil)
+	logger.Information("Information Message", nil)
+	logger.Warn("Warn Message", nil)
+	logger.Error("Error Message", errors.New("ERROR"), nil)
+	logger.Fatal("Fatal Message", errors.New("FATAL"), nil)
+
+}
+
 */
 package golog
 
