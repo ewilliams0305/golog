@@ -43,8 +43,11 @@ type GoLog struct {
 	configuration
 }
 
-// The logger is responsible for weiting messages to sinks. 
-// When a Logger method is invoked 
+// The logger is NOT responsible for writing messages to sinks. 
+// In fact a logger simply passes data to the golog and LogEvents are created. 
+//
+// When a Logger method is invoked these events are passed to the sinks and rendered for display. 
+// The logger is Generate by the builder pattern and then used throughout your application.  
 type Logger interface {
 	Verbose(message string, props properties)
 	Debug(message string, props properties)
