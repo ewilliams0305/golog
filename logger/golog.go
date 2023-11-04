@@ -34,8 +34,17 @@ import (
 	"time"
 )
 
-type properties map[string]string
+// The GoLog struc is the core component of the golog package. 
+// GoLog is responsible for storing your logging confogurations, 
+// pointers to your sinks, and implementations of the loger builder.
+// While tou will never directly access the golog it a critical component of the framework. 
+type GoLog struct {
+	sinks []SinkWriter
+	configuration
+}
 
+// The logger is responsible for weiting messages to sinks. 
+// When a Logger method is invoked 
 type Logger interface {
 	Verbose(message string, props properties)
 	Debug(message string, props properties)
@@ -44,6 +53,10 @@ type Logger interface {
 	Error(message string, err error, props properties)
 	Fatal(message string, err error, props properties)
 }
+
+type properties map[string]string
+
+
 
 func (gl *GoLog) Verbose(message string, props properties) {
 
