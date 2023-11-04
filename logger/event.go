@@ -5,12 +5,15 @@ import (
 	"time"
 )
 
+
 type LogEvent struct {
 	timestamp time.Time
 	level     LogLevel
 	message   string
 	props     properties
 }
+
+type properties map[string]string
 
 type FormatMessage interface {
 	Format() string
