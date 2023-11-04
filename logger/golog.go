@@ -115,7 +115,7 @@ func (gl *GoLog) write(message string, level LogLevel, props properties) {
 	for i, s := range gl.sinks {
 		//wg.Add(1)
 
-		go writeSink(s, LogEvent{
+		go writeSink(s, logEvent{
 			timestamp: time.Now(),
 			level:     level,
 			message:   message,
@@ -145,7 +145,6 @@ func (gl *GoLog) write(message string, level LogLevel, props properties) {
 	}
 }
 
-func writeSink(s SinkWriter, e LogEvent, c chan string) {
+func writeSink(s SinkWriter, e logEvent, c chan string) {
 	s.WriteTo(e)
-
 }
