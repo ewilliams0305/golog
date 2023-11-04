@@ -1,3 +1,10 @@
+/*
+The golog package is a logging framework designed around abstracting the output if logging messages. 
+The golog framework helps to: 
+- Describe a log message with structure 
+- Render the messgae
+- Abstract the output of the messages to different and or multiple destinations. 
+*/
 package golog
 
 import (
