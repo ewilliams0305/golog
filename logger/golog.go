@@ -57,9 +57,6 @@ type Logger interface {
 	Fatal(message string, err error, props properties)
 }
 
-
-
-
 func (gl *GoLog) Verbose(message string, props properties) {
 
 	if gl.configuration.level <= Verbose {
