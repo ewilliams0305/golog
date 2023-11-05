@@ -1,7 +1,11 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/ewilliams0305/golog)](https://goreportcard.com/report/github.com/ewilliams0305/golog)
 
 # golog
-Logging abstraction for go. 
+A Logging abstraction for go that seperates outputs ```SinkWriter```
+from messages ```Logger```. golog can support multiple logging configurations 
+and or multiple output configurations. golog supports the ability
+to enable and disable verbosity at runtime. golog maintains structure to your logged 
+messages to ensure data integrity and ease of queries. 
 
 ```go
 writer := &FmtPrinter{}
