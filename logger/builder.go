@@ -9,7 +9,7 @@ type formatter string
 
 func LoggingConfiguration() loggerConfiguration {
 
-	return &GoLog{}
+	return &goLog{}
 }
 
 type loggerConfiguration interface {
@@ -39,9 +39,7 @@ type createLogger interface {
 	CreateLogger() Logger
 }
 
-// Function Implementations
-
-func (gl *GoLog) Configure(minimuLevel LogLevel) loggerWriter {
+func (gl *goLog) Configure(minimuLevel LogLevel) loggerWriter {
 
 	// Do the setup of the required internals
 	gl.configuration = configuration{
@@ -51,22 +49,24 @@ func (gl *GoLog) Configure(minimuLevel LogLevel) loggerWriter {
 	return gl
 }
 
-func (gl *GoLog) WriteTo(sink SinkWriter) createWriters {
-	gl.sinks = append(gl.sinks, sink)
+func (gl *goLog) WriteTo(sink SinkWriter) createWriters {
+
+	config := sinkConfiguration{sink: sink, level: gl.level, template: ""}
+	gl.sinks = append(gl.sinks, config)
 	return gl
 }
 
-func (gl *GoLog) MinimuLevel(level LogLevel) createWriters {
+func (gl *goLog) MinimuLevel(level LogLevel) createWriters {
 	// TODO: Add level restriction to the SINK
 	return gl
 }
 
-func (gl *GoLog) WithFormat(messageTemplate string) createWriters {
+func (gl *goLog) WithFormat(messageTemplate string) createWriters {
 	// TODO: Add Message Template to the SINK
 	return gl
 }
 
-func (gl *GoLog) CreateLogger() Logger {
+func (gl *goLog) CreateLogger() Logger {
 
 	return gl
 }
