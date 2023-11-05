@@ -19,8 +19,9 @@ logger.Error("Error Message", errors.New("ERROR"), nil)
 logger.Fatal("Fatal Message", errors.New("FATAL"), nil)
 
 ```
-
 ### Configure
+`golog` requires configuration and to faciliate this the builder pattern is used. 
+
 
 ### Logger
 
