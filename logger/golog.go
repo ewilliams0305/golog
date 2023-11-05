@@ -12,7 +12,7 @@ func main() {
 	sink1 := &FmtPrinter{}
 	sink2 := &FmtPrinter{}
 
-	logger := golog.LoggingConfiguration().
+	logger := golog.Loggingconfig().
 		Configure(golog.Information).
 		WriteTo(sink1).MinimuLevel(golog.Debug).WithFormat("").
 		WriteTo(sink2).MinimuLevel(golog.Information).
@@ -38,14 +38,13 @@ import (
 // pointers to your sinks, and implementations of the loger builder.
 // While tou will never directly access the golog it a critical component of the framework.
 type goLog struct {
-	sinks []sinkConfiguration
-	configuration
+	sinks  []loggingSink
+	config configuration
 }
 
-type sinkConfiguration struct {
-	sink     SinkWriter
-	level    LogLevel
-	template string
+type loggingSink struct {
+	sink   SinkWriter
+	config configuration
 }
 
 // The logger is NOT responsible for writing messages to sinks.
@@ -64,42 +63,42 @@ type Logger interface {
 
 func (gl *goLog) Verbose(message string, props properties) {
 
-	if gl.configuration.level <= Verbose {
+	if gl.config.level <= Verbose {
 		gl.write(message, Verbose, props)
 	}
 }
 
 func (gl *goLog) Debug(message string, props properties) {
 
-	if gl.configuration.level <= Debug {
+	if gl.config.level <= Debug {
 		gl.write(message, Debug, props)
 	}
 }
 
 func (gl *goLog) Information(message string, props properties) {
 
-	if gl.configuration.level <= Information {
+	if gl.config.level <= Information {
 		gl.write(message, Information, props)
 	}
 }
 
 func (gl *goLog) Warn(message string, props properties) {
 
-	if gl.configuration.level <= Warn {
+	if gl.config.level <= Warn {
 		gl.write(message, Warn, props)
 	}
 }
 
 func (gl *goLog) Error(message string, err error, props properties) {
 
-	if gl.configuration.level <= Error {
+	if gl.config.level <= Error {
 		gl.write(message, Error, props)
 	}
 }
 
 func (gl *goLog) Fatal(message string, err error, props properties) {
 
-	if gl.configuration.level <= Fatal {
+	if gl.config.level <= Fatal {
 		gl.write(message, Fatal, props)
 	}
 }
@@ -112,7 +111,7 @@ func (gl *goLog) write(message string, level LogLevel, props properties) {
 	for _, s := range gl.sinks {
 		//wg.Add(1)
 
-		go writeSink(s.sink, LogEvent{
+		writeSink(s.sink, LogEvent{
 			timestamp: time.Now(),
 			level:     level,
 			message:   message,

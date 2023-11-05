@@ -1,19 +1,12 @@
 package golog
 
-type configuration struct {
-	level  LogLevel
-	format formatter
-}
-
-type formatter string
-
 func LoggingConfiguration() loggerConfiguration {
 
 	return &goLog{}
 }
 
 type loggerConfiguration interface {
-	Configure(minimuLevel LogLevel) loggerWriter
+	Configure(minimuLevel LogLevel, template string) loggerWriter
 }
 
 type createWriters interface {
@@ -32,17 +25,23 @@ type writerLevel interface {
 }
 
 type writerFormat interface {
-	WithFormat(messageTemplate string) createWriters
+	WithFormat(format formatter) createWriters
 }
 
 type createLogger interface {
 	CreateLogger() Logger
 }
 
-func (gl *goLog) Configure(minimuLevel LogLevel) loggerWriter {
+/******************************************************************************************
+* Builder interface implemenations.
+* All functions below pass the golog struct between each call augmenting it with addtional
+* behavior.  Once the builder is completed the golog struct is used to map messages to sinks.
+*******************************************************************************************/
+
+func (gl *goLog) Configure(minimuLevel LogLevel, template string) loggerWriter {
 
 	// Do the setup of the required internals
-	gl.configuration = configuration{
+	gl.config = configuration{
 		level:  minimuLevel,
 		format: "",
 	}
@@ -51,7 +50,13 @@ func (gl *goLog) Configure(minimuLevel LogLevel) loggerWriter {
 
 func (gl *goLog) WriteTo(sink SinkWriter) createWriters {
 
-	config := sinkConfiguration{sink: sink, level: gl.level, template: ""}
+	config := loggingSink{
+		sink: sink,
+		config: configuration{
+			level:  gl.config.level,
+			format: gl.config.format,
+		},
+	}
 	gl.sinks = append(gl.sinks, config)
 	return gl
 }
@@ -61,7 +66,7 @@ func (gl *goLog) MinimuLevel(level LogLevel) createWriters {
 	return gl
 }
 
-func (gl *goLog) WithFormat(messageTemplate string) createWriters {
+func (gl *goLog) WithFormat(format formatter) createWriters {
 	// TODO: Add Message Template to the SINK
 	return gl
 }

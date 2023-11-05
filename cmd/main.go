@@ -13,7 +13,7 @@ func main() {
 	sink2 := &FmtPrinter{}
 
 	logger := golog.LoggingConfiguration().
-		Configure(golog.Information).
+		Configure(golog.Information, "[%l %t] %m").
 		WriteTo(sink1).MinimuLevel(golog.Debug).WithFormat("").
 		WriteTo(sink2).MinimuLevel(golog.Information).
 		CreateLogger()
