@@ -1,5 +1,8 @@
 package golog
 
+// The entry point for the [golog] logging framework.
+// The [LoggingConfiguration] functions starts the golog configuration builder by returning a [loggerConfiguration]
+// interface.  The logging configuration proceeds the consumer to the next step configuring an log level and format template.
 func LoggingConfiguration() loggerConfiguration {
 
 	return &goLog{}
@@ -58,11 +61,14 @@ func (gl *goLog) WriteTo(sink SinkWriter) createWriters {
 		},
 	}
 	gl.sinks = append(gl.sinks, config)
+
+	gl.sinkIndex++
 	return gl
 }
 
 func (gl *goLog) MinimuLevel(level LogLevel) createWriters {
-	// TODO: Add level restriction to the SINK
+
+	gl.sinks[gl.sinkIndex-1].config.level = level
 	return gl
 }
 

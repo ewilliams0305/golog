@@ -13,9 +13,9 @@ func main() {
 	sink2 := &FmtPrinter{}
 
 	logger := golog.LoggingConfiguration().
-		Configure(golog.Information, "[%l %t] %m").
-		WriteTo(sink1).MinimuLevel(golog.Debug).WithFormat("").
-		WriteTo(sink2).MinimuLevel(golog.Information).
+		Configure(golog.Verbose, "[%l %t] %m").
+		WriteTo(sink1).MinimuLevel(golog.Fatal).WithFormat("").
+		WriteTo(sink2).
 		CreateLogger()
 
 	logger.Verbose("Verbose Message", nil)

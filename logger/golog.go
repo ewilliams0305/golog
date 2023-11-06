@@ -38,8 +38,9 @@ import (
 // pointers to your sinks, and implementations of the loger builder.
 // While tou will never directly access the golog it a critical component of the framework.
 type goLog struct {
-	sinks  []loggingSink
-	config configuration
+	sinks     []loggingSink
+	config    configuration
+	sinkIndex int16
 }
 
 type loggingSink struct {
@@ -63,79 +64,58 @@ type Logger interface {
 
 func (gl *goLog) Verbose(message string, props properties) {
 
-	if gl.config.level <= Verbose {
-		gl.write(message, Verbose, props)
-	}
+	//if gl.config.level <= Verbose {
+	gl.write(message, Verbose, props)
+	//}
 }
 
 func (gl *goLog) Debug(message string, props properties) {
 
-	if gl.config.level <= Debug {
-		gl.write(message, Debug, props)
-	}
+	//if gl.config.level <= Debug {
+	gl.write(message, Debug, props)
+	//}
 }
 
 func (gl *goLog) Information(message string, props properties) {
 
-	if gl.config.level <= Information {
-		gl.write(message, Information, props)
-	}
+	//if gl.config.level <= Information {
+	gl.write(message, Information, props)
+	//}
 }
 
 func (gl *goLog) Warn(message string, props properties) {
 
-	if gl.config.level <= Warn {
-		gl.write(message, Warn, props)
-	}
+	//if gl.config.level <= Warn {
+	gl.write(message, Warn, props)
+	//}
 }
 
 func (gl *goLog) Error(message string, err error, props properties) {
 
-	if gl.config.level <= Error {
-		gl.write(message, Error, props)
-	}
+	//if gl.config.level <= Error {
+	gl.write(message, Error, props)
+	//}
 }
 
 func (gl *goLog) Fatal(message string, err error, props properties) {
 
-	if gl.config.level <= Fatal {
-		gl.write(message, Fatal, props)
-	}
+	//if gl.config.level <= Fatal {
+	gl.write(message, Fatal, props)
+	//}
 }
 
 func (gl *goLog) write(message string, level LogLevel, props properties) {
 
-	//var wg sync.WaitGroup
-
 	c := make(chan string)
 	for _, s := range gl.sinks {
-		//wg.Add(1)
-
-		writeSink(s.sink, LogEvent{
-			timestamp: time.Now(),
-			level:     level,
-			message:   message,
-			props:     props,
-		}, c)
-
-		// go s.WriteTo(LogEvent{
-		// 	timestamp: time.Now(),
-		// 	level:     level,
-		// 	message:   message,
-		// 	props:     props,
-		// })
-
-		// go func(index int, sink SinkWriter) {
-
-		// 	//defer wg.Done()
-
-		// 	sink.WriteTo(LogEvent{
-		// 		timestamp: time.Now(),
-		// 		level:     level,
-		// 		message:   message,
-		// 		props:     props,
-		// 	})
-		// }(i, s)
+		if s.config.level <= level {
+			writeSink(s.sink, LogEvent{
+				timestamp: time.Now(),
+				level:     level,
+				message:   message,
+				props:     props,
+			}, c)
+		}
 	}
 }
 
