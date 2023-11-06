@@ -26,13 +26,13 @@ type loggerWriter interface {
 }
 
 // Overrides the globally configured log level with a sink specific minimum level.
-// This allow several sinks to have a log level of verbose while file system or http sinks onyl log errors.
+// This allow several sinks to have a log level of verbose while file system or http sinks only log errors.
 type writerLevel interface {
 	MinimuLevel(level LogLevel) createWriters
 }
 
 // Overrides the globally configured message format template.
-// When overriden specific sinks can use a custom format specific to the sink.
+// When overridden specific sinks can use a custom format specific to the sink.
 type writerFormat interface {
 	WithFormat(format formatter) createWriters
 }
@@ -76,7 +76,7 @@ func (gl *goLog) WriteTo(sink SinkWriter) createWriters {
 }
 
 // Overrides the globally configured log level with a sink specific minimum level.
-// This allow several sinks to have a log level of verbose while file system or http sinks onyl log errors.
+// This allow several sinks to have a log level of verbose while file system or http sinks only log errors.
 func (gl *goLog) MinimuLevel(level LogLevel) createWriters {
 
 	gl.sinks[gl.sinkIndex-1].config.level = level
@@ -84,7 +84,7 @@ func (gl *goLog) MinimuLevel(level LogLevel) createWriters {
 }
 
 // Overrides the globally configured message format template.
-// When overriden specific sinks can use a custom format specific to the sink.
+// When overridden specific sinks can use a custom format specific to the sink.
 func (gl *goLog) WithFormat(format formatter) createWriters {
 	gl.sinks[gl.sinkIndex-1].config.format = format
 	return gl
