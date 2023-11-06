@@ -1,4 +1,5 @@
 /*
+
 The golog package is a logging framework designed around abstracting the output if logging messages.
 The golog framework helps to:
 - Describe a log message with structure
@@ -26,6 +27,7 @@ func main() {
 	logger.Fatal("Fatal Message", errors.New("FATAL"), nil)
 
 }
+
 */
 package golog
 
