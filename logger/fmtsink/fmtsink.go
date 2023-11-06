@@ -46,17 +46,11 @@ func colorizeError(err *error) string {
 
 func colorizeLevel(e *golog.LogEvent) string {
 	switch e.Level {
-	case golog.Verbose:
+	case golog.Verbose, golog.Debug:
 		return green + "[" + e.Level.ToString() + "]" + reset
-	case golog.Debug:
-		return green + "[" + e.Level.ToString() + "]" + reset
-	case golog.Information:
+	case golog.Information, golog.Warn:
 		return yellow + "[" + e.Level.ToString() + "]" + reset
-	case golog.Warn:
-		return yellow + "[" + e.Level.ToString() + "]" + reset
-	case golog.Error:
-		return red + "[" + e.Level.ToString() + "]" + reset
-	case golog.Fatal:
+	case golog.Error, golog.Fatal:
 		return red + "[" + e.Level.ToString() + "]" + reset
 	default:
 		return red + "[" + e.Level.ToString() + "]" + reset
