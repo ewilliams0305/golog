@@ -55,12 +55,36 @@ type loggingSink struct {
 // When a Logger method is invoked these events are passed to the sinks and rendered for display.
 // The logger is Generate by the builder pattern and then used throughout your application.
 type Logger interface {
+	MessageWriter
+	LogSwitch
+}
+
+type MessageWriter interface {
 	Verbose(message string, args ...interface{})
 	Debug(message string, args ...interface{})
 	Information(message string, args ...interface{})
 	Warn(message string, args ...interface{})
 	Error(message string, err error, args ...interface{})
 	Fatal(message string, err error, args ...interface{})
+}
+
+type LogSwitch interface {
+	SwitchLevel(level LogLevel)
+	CurrentLevel() LogLevel
+}
+
+func (gl *goLog) SwitchLevel(level LogLevel) {
+
+	gl.config.level = level
+
+	for _, s := range gl.sinks {
+		s.config.level = level
+	}
+}
+
+func (gl *goLog) CurrentLevel() LogLevel {
+
+	return gl.config.level
 }
 
 func (gl *goLog) Verbose(message string, args ...interface{}) {

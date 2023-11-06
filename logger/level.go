@@ -1,5 +1,7 @@
 package golog
 
+import "strings"
+
 // The LogLevel type represents a restriction put on a writers output
 // The LogLevel supports a total of 6 levels.
 // When a log level is set to Information (2) only log message of
@@ -36,4 +38,23 @@ func (s LogLevel) ToString() string {
 		return "FTL"
 	}
 	return "UNKNOWN"
+}
+
+func CreateLevelFromString(s string) LogLevel {
+
+	switch strings.ToUpper(s) {
+	case "VERSOSE":
+		return Verbose
+	case "DEBUG":
+		return Debug
+	case "INFO":
+		return Information
+	case "WARN":
+		return Warn
+	case "ERROR":
+		return Error
+	case "FATAL":
+		return Fatal
+	}
+	return Information
 }

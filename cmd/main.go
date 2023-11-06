@@ -19,6 +19,18 @@ func main() {
 		WriteTo(sink2).MinimuLevel(golog.Information).
 		CreateLogger()
 
+	var response string
+
+	fmt.Print("Enter a new Log Level (verbose, debug, info, warn, error, fatal): ")
+	_, err := fmt.Scanln(&response)
+
+	if err != nil {
+		logger.Error("Proceeding with default levels", err)
+	} else {
+		level := golog.CreateLevelFromString(response)
+		logger.SwitchLevel(level)
+	}
+
 	logger.Verbose("Verbose Message %s", "VERNON")
 	logger.Debug("Debug Message %s %d", "BILLY", 20)
 	logger.Information("Information Message %s", "IMAC")
