@@ -2,6 +2,7 @@ package fmtsink
 
 import (
 	"fmt"
+ "strings"
 
 	golog "github.com/ewilliams0305/golog/logger"
 )
@@ -41,18 +42,33 @@ func RenderErrorEvent(e *golog.LogEvent) string {
 }
 
 func colorizeError(err *error) string {
-  return ">>>>> " red + error + reset
+  var sb strings.StringBuilder
+  sb.WriteString(">>>>> ")
+  sb.WriteString(red)
+  sb.WriteString(error)
+  sb.WriteString(reset)
+  return sb.String()
 }
 
-func colorizeLevel(e *golog.LogEvent) string {
-	switch e.Level {
+func getLevelColor(l *golog.LogLevel) string {
+ switch e.Level {
 	case golog.Verbose, golog.Debug:
-		return green + "[" + e.Level.ToString() + "]" + reset
+		return green
 	case golog.Information, golog.Warn:
-		return yellow + "[" + e.Level.ToString() + "]" + reset
+		return yellow
 	case golog.Error, golog.Fatal:
-		return red + "[" + e.Level.ToString() + "]" + reset
+		return red
 	default:
-		return red + "[" + e.Level.ToString() + "]" + reset
+		return red
 	}
+}
+func colorizeLevel(e *golog.LogEvent) string {
+	color:= getLevelColor(e.Level)
+ var sb strings.StringBuilder
+ 
+ sb.WriteString(color)
+ sb.WriteString("[")
+ sb.WriteString(e.Level.ToString())
+ sb.WriteString("]")
+ sb.WriteString(reset)
 }
