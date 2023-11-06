@@ -58,6 +58,9 @@ So you have choices; create a single logger for your entire application, or crea
 can send data to multiple sinks or a single sink. 
 
 ## Logger
+Once configured the builder will return a Logger interface. 
+The logger provides you with several logging functions,
+and the ability to switch log levels at runtime. 
 
 ```go
 type Logger interface {
