@@ -1,5 +1,7 @@
 package golog
 
+import "sync"
+
 // The entry point for the [golog] logging framework.
 // The [LoggingConfiguration] functions starts the golog configuration builder by returning a [loggerConfiguration]
 // interface.  The logging configuration proceeds the consumer to the next step configuring an log level and format template.
@@ -60,7 +62,8 @@ func (gl *goLog) Configure(minimuLevel LogLevel, template string) loggerWriter {
 func (gl *goLog) WriteTo(sink SinkWriter) createWriters {
 
 	writer := &loggingSink{
-		sink: &sink,
+		sink:  &sink,
+		mutex: sync.Mutex{},
 		config: configuration{
 			level:  gl.config.level,
 			format: gl.config.format,

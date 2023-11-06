@@ -47,6 +47,7 @@ type goLog struct {
 type loggingSink struct {
 	sink   *SinkWriter
 	config configuration
+	mutex  sync.Mutex
 }
 
 // The logger is NOT responsible for writing messages to sinks.
@@ -117,44 +118,30 @@ func (gl *goLog) Fatal(message string, err error, args ...interface{}) {
 	gl.write(message, Fatal, err, args...)
 }
 
-func (gl *goLog) write(message string, level LogLevel, err error, args ...interface{}) {
+var wg sync.WaitGroup
 
-	resultChan := make(chan string, len(gl.sinks))
-	var wg sync.WaitGroup
+func (gl *goLog) write(message string, level LogLevel, err error, args ...interface{}) {
 
 	for _, s := range gl.sinks {
 		if s.config.level <= level {
-
 			wg.Add(1)
-
-			go func(sink *SinkWriter) {
-				writeSink(*sink, LogEvent{
-					Timestamp: time.Now(),
-					Level:     level,
-					Message:   message,
-					Error:     err,
-					Args:      args,
-				}, resultChan)
-				defer wg.Done()
-			}(s.sink)
+			go writeSink(s, LogEvent{
+				Timestamp: time.Now(),
+				Level:     level,
+				Message:   message,
+				Error:     err,
+				Args:      args,
+			})
 		}
 	}
-
-	go func() {
-		wg.Wait()
-		close(resultChan)
-	}()
-
-	for range resultChan {
-	}
+	wg.Wait()
 }
 
-func writeSink(s SinkWriter, e LogEvent, c chan string) {
-
-	err := s.WriteTo(e)
-	if err != nil {
-		c <- "Error: " + err.Error()
-	} else {
-		c <- "Success"
-	}
+func writeSink(s *loggingSink, e LogEvent) error {
+	s.mutex.Lock()
+	sink := *s.sink
+	err := sink.WriteTo(e)
+	s.mutex.Unlock()
+	wg.Done()
+	return err
 }
