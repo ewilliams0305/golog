@@ -37,7 +37,7 @@ type createLogger interface {
 
 /******************************************************************************************
 * Builder interface implemenations.
-* All functions below pass the golog struct between each call augmenting it with addtional
+* All functions below pass the golog struct between each call augmenting it with additional
 * behavior.  Once the builder is completed the golog struct is used to map messages to sinks.
 *******************************************************************************************/
 

@@ -16,16 +16,20 @@ func main() {
 	logger := golog.LoggingConfiguration().
 		Configure(golog.Verbose, "[%l %t] %m").
 		WriteTo(sink1).MinimuLevel(golog.Verbose).
-		WriteTo(sink2).MinimuLevel(golog.Verbose).
+		WriteTo(sink2).MinimuLevel(golog.Information).
 		CreateLogger()
 
-	logger.Verbose("Verbose Message", nil)
-	logger.Debug("Debug Message", nil)
-	logger.Information("Information Message", nil)
-	logger.Warn("Warn Message", nil)
-	logger.Error("Error Message", errors.New("ERROR"), nil)
-	logger.Fatal("Fatal Message", errors.New("FATAL"), nil)
+	logger.Verbose("Verbose Message %s", "VERNON")
+	logger.Debug("Debug Message %s %d", "BILLY", 20)
+	logger.Information("Information Message %s", "IMAC")
+	logger.Warn("Warn Message %s %d", []interface{}{"Alice", 30})
+	logger.Error("Error Message", errors.New("ERROR"))
+	logger.Fatal("Fatal Message", errors.New("FATAL"))
 
+}
+
+func formatTemplate(template string, args ...interface{}) string {
+	return fmt.Sprintf(template, args...)
 }
 
 /***************************
@@ -38,6 +42,7 @@ type FmtPrinter struct {
 }
 
 func (f FmtPrinter) WriteTo(message golog.LogEvent) error {
+
 	_, e := fmt.Println(message.RenderMessage())
 	return e
 }

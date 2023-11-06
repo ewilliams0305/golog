@@ -55,45 +55,45 @@ type loggingSink struct {
 // When a Logger method is invoked these events are passed to the sinks and rendered for display.
 // The logger is Generate by the builder pattern and then used throughout your application.
 type Logger interface {
-	Verbose(message string, props properties)
-	Debug(message string, props properties)
-	Information(message string, props properties)
-	Warn(message string, props properties)
-	Error(message string, err error, props properties)
-	Fatal(message string, err error, props properties)
+	Verbose(message string, args ...interface{})
+	Debug(message string, args ...interface{})
+	Information(message string, args ...interface{})
+	Warn(message string, args ...interface{})
+	Error(message string, err error, args ...interface{})
+	Fatal(message string, err error, args ...interface{})
 }
 
-func (gl *goLog) Verbose(message string, props properties) {
+func (gl *goLog) Verbose(message string, args ...interface{}) {
 
-	gl.write(message, Verbose, props)
+	gl.write(message, Verbose, args...)
 }
 
-func (gl *goLog) Debug(message string, props properties) {
+func (gl *goLog) Debug(message string, args ...interface{}) {
 
-	gl.write(message, Debug, props)
+	gl.write(message, Debug, args...)
 }
 
-func (gl *goLog) Information(message string, props properties) {
+func (gl *goLog) Information(message string, args ...interface{}) {
 
-	gl.write(message, Information, props)
+	gl.write(message, Information, args...)
 }
 
-func (gl *goLog) Warn(message string, props properties) {
+func (gl *goLog) Warn(message string, args ...interface{}) {
 
-	gl.write(message, Warn, props)
+	gl.write(message, Warn, args...)
 }
 
-func (gl *goLog) Error(message string, err error, props properties) {
+func (gl *goLog) Error(message string, err error, args ...interface{}) {
 
-	gl.write(message, Error, props)
+	gl.write(message, Error, args...)
 }
 
-func (gl *goLog) Fatal(message string, err error, props properties) {
+func (gl *goLog) Fatal(message string, err error, args ...interface{}) {
 
-	gl.write(message, Fatal, props)
+	gl.write(message, Fatal, args...)
 }
 
-func (gl *goLog) write(message string, level LogLevel, props properties) {
+func (gl *goLog) write(message string, level LogLevel, args ...interface{}) {
 
 	resultChan := make(chan string, len(gl.sinks))
 	var wg sync.WaitGroup
@@ -105,10 +105,10 @@ func (gl *goLog) write(message string, level LogLevel, props properties) {
 
 			go func(sink SinkWriter) {
 				writeSink(sink, LogEvent{
-					timestamp: time.Now(),
-					level:     level,
-					message:   message,
-					props:     props,
+					Timestamp: time.Now(),
+					Level:     level,
+					Message:   message,
+					Args:      args,
 				}, resultChan)
 				defer wg.Done()
 			}(s.sink)
