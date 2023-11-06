@@ -14,8 +14,8 @@ func main() {
 
 	logger := golog.LoggingConfiguration().
 		Configure(golog.Verbose, "[%l %t] %m").
-		WriteTo(sink1).MinimuLevel(golog.Fatal).WithFormat("").
-		WriteTo(sink2).
+		WriteTo(sink1).MinimuLevel(golog.Fatal).
+		WriteTo(sink2).MinimuLevel(golog.Verbose).
 		CreateLogger()
 
 	logger.Verbose("Verbose Message", nil)
@@ -27,16 +27,7 @@ func main() {
 
 }
 
-// type FmtPrinter struct {
-// 	//prefix string
-// }
-
-// func (f FmtPrinter) WriteTo(message golog.LogEvent) {
-// 	//println (message)
-// }
-
 type FmtPrinter struct {
-	//prefix string
 }
 
 func (f FmtPrinter) WriteTo(message golog.LogEvent) {
