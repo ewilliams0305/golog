@@ -23,7 +23,7 @@ logger.Error("Error Message", errors.New("ERROR"), nil)
 logger.Fatal("Fatal Message", errors.New("FATAL"), nil)
 
 ```
-### Configure
+## Configure
 `golog` requires configuration, to faciliate this the builder pattern is used. 
 The golog configuration API was designed to ensure consumers fall into the pit of success. 
 
@@ -57,9 +57,30 @@ CreateLogger()
 So you have choices; create a single logger for your entire application, or create multiple loggers. a single logger 
 can send data to multiple sinks or a single sink. 
 
-### Logger
+## Logger
 
-### Sink Writers
+```go
+type Logger interface {
+	MessageWriter
+	LogSwitch
+}
+
+type MessageWriter interface {
+	Verbose(message string, args ...interface{})
+	Debug(message string, args ...interface{})
+	Information(message string, args ...interface{})
+	Warn(message string, args ...interface{})
+	Error(message string, err error, args ...interface{})
+	Fatal(message string, err error, args ...interface{})
+}
+
+type LogSwitch interface {
+	SwitchLevel(level LogLevel)
+	CurrentLevel() LogLevel
+}
+```
+
+## Sink Writers
 Creating custom sink writers compatible with golog is as simple as 
 implementing the `SinkWriter` interface. 
 
