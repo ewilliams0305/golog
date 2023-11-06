@@ -89,35 +89,35 @@ func (gl *goLog) CurrentLevel() LogLevel {
 
 func (gl *goLog) Verbose(message string, args ...interface{}) {
 
-	gl.write(message, Verbose, args...)
+	gl.write(message, Verbose, nil, args...)
 }
 
 func (gl *goLog) Debug(message string, args ...interface{}) {
 
-	gl.write(message, Debug, args...)
+	gl.write(message, Debug, nil, args...)
 }
 
 func (gl *goLog) Information(message string, args ...interface{}) {
 
-	gl.write(message, Information, args...)
+	gl.write(message, Information, nil, args...)
 }
 
 func (gl *goLog) Warn(message string, args ...interface{}) {
 
-	gl.write(message, Warn, args...)
+	gl.write(message, Warn, nil, args...)
 }
 
 func (gl *goLog) Error(message string, err error, args ...interface{}) {
 
-	gl.write(message, Error, args...)
+	gl.write(message, Error, err, args...)
 }
 
 func (gl *goLog) Fatal(message string, err error, args ...interface{}) {
 
-	gl.write(message, Fatal, args...)
+	gl.write(message, Fatal, err, args...)
 }
 
-func (gl *goLog) write(message string, level LogLevel, args ...interface{}) {
+func (gl *goLog) write(message string, level LogLevel, err error, args ...interface{}) {
 
 	resultChan := make(chan string, len(gl.sinks))
 	var wg sync.WaitGroup
@@ -132,6 +132,7 @@ func (gl *goLog) write(message string, level LogLevel, args ...interface{}) {
 					Timestamp: time.Now(),
 					Level:     level,
 					Message:   message,
+					Error:     err,
 					Args:      args,
 				}, resultChan)
 				defer wg.Done()

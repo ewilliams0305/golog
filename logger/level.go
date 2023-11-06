@@ -40,6 +40,7 @@ func (s LogLevel) ToString() string {
 	return "UNKNOWN"
 }
 
+// Creates a level from a string value.
 func CreateLevelFromString(s string) LogLevel {
 
 	switch strings.ToUpper(s) {

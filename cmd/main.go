@@ -6,11 +6,12 @@ import (
 	"time"
 
 	golog "github.com/ewilliams0305/golog/logger"
+	"github.com/ewilliams0305/golog/logger/fmtsink"
 )
 
 func main() {
 
-	sink1 := &FmtPrinter{}
+	sink1 := &fmtsink.FmtPrinter{}
 	sink2 := &FmtPrinterSlow{}
 
 	logger := golog.LoggingConfiguration().
@@ -35,32 +36,19 @@ func main() {
 	level := golog.CreateLevelFromString(response)
 	logger.SwitchLevel(level)
 
+	newError := errors.New("ERROR MESSAGE PASSED TO LOG")
+
 	logger.Verbose("Verbose Message %s", "VERNON")
 	logger.Debug("Debug Message %s %d", "BILLY", 20)
 	logger.Information("Information Message %s", "IMAC")
 	logger.Warn("Warn Message %s %d", "Alice", 30)
-	logger.Error("Error Message", errors.New("ERROR"))
-	logger.Fatal("Fatal Message", errors.New("FATAL"))
+	logger.Error("Error Message", newError)
+	logger.Fatal("Fatal Message", newError)
 
 }
 
 func formatTemplate(template string, args ...interface{}) string {
 	return fmt.Sprintf(template, args...)
-}
-
-/***************************
-*
-* Mock Logger that is FAST
-*
-****************************/
-
-type FmtPrinter struct {
-}
-
-func (f *FmtPrinter) WriteTo(message golog.LogEvent) error {
-
-	_, e := fmt.Println(message.RenderMessage())
-	return e
 }
 
 /***************************

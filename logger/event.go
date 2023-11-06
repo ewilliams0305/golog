@@ -14,6 +14,9 @@ type LogEvent struct {
 	Level LogLevel
 	// The Message templated used to render the displayed log Message.
 	Message string
+	// An optional error to send in the log event.
+	// Errors can optional be rendered seperately from the rest of the log message.
+	Error error
 	// Optional properties to add to your structured logs.
 	// Properties can include complex objects, simply strings, any
 	Args []interface{}
@@ -29,6 +32,10 @@ type FormatMessage interface {
 // TODO: Provide message template to facilitate formatting.
 func (e *LogEvent) RenderMessage() string {
 
+	if e.Error != nil {
+		return e.RenderErrorEvent()
+	}
+
 	if len(e.Args) > 0 {
 
 		formattedArgs := formatTemplate(e.Message, e.Args...)
@@ -39,4 +46,13 @@ func (e *LogEvent) RenderMessage() string {
 
 func formatTemplate(template string, args ...any) string {
 	return fmt.Sprintf(template, args...)
+}
+
+func (e *LogEvent) RenderErrorEvent() string {
+	if len(e.Args) > 0 {
+
+		formattedArgs := formatTemplate(e.Message, e.Args...)
+		return fmt.Sprintf("[%s %v] %s \n%s", e.Level.ToString(), e.Timestamp.Format("2006-01-02T15:04:05"), formattedArgs, e.Error)
+	}
+	return fmt.Sprintf("[%s %v] %s \n%s", e.Level.ToString(), e.Timestamp.Format("2006-01-02T15:04:05"), e.Message, e.Error)
 }
