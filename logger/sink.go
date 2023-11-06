@@ -9,5 +9,5 @@ type SinkWriter interface {
 	// The write method will be invoked when a log messge is created.
 	// The write method will only be invoked if
 	// - The log message is greater than the sinks current level.
-	WriteTo(message LogEvent)
+	WriteTo(message LogEvent) error
 }

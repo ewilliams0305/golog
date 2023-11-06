@@ -1,5 +1,4 @@
 /*
-
 The golog package is a logging framework designed around abstracting the output if logging messages.
 The golog framework helps to:
 - Describe a log message with structure
@@ -27,11 +26,11 @@ func main() {
 	logger.Fatal("Fatal Message", errors.New("FATAL"), nil)
 
 }
-
 */
 package golog
 
 import (
+	"sync"
 	"time"
 )
 
@@ -66,61 +65,71 @@ type Logger interface {
 
 func (gl *goLog) Verbose(message string, props properties) {
 
-	//if gl.config.level <= Verbose {
 	gl.write(message, Verbose, props)
-	//}
 }
 
 func (gl *goLog) Debug(message string, props properties) {
 
-	//if gl.config.level <= Debug {
 	gl.write(message, Debug, props)
-	//}
 }
 
 func (gl *goLog) Information(message string, props properties) {
 
-	//if gl.config.level <= Information {
 	gl.write(message, Information, props)
-	//}
 }
 
 func (gl *goLog) Warn(message string, props properties) {
 
-	//if gl.config.level <= Warn {
 	gl.write(message, Warn, props)
-	//}
 }
 
 func (gl *goLog) Error(message string, err error, props properties) {
 
-	//if gl.config.level <= Error {
 	gl.write(message, Error, props)
-	//}
 }
 
 func (gl *goLog) Fatal(message string, err error, props properties) {
 
-	//if gl.config.level <= Fatal {
 	gl.write(message, Fatal, props)
-	//}
 }
 
 func (gl *goLog) write(message string, level LogLevel, props properties) {
 
-	c := make(chan string)
+	resultChan := make(chan string, len(gl.sinks))
+	var wg sync.WaitGroup
+
 	for _, s := range gl.sinks {
 		if s.config.level <= level {
-			writeSink(s.sink, LogEvent{
-				timestamp: time.Now(),
-				level:     level,
-				message:   message,
-				props:     props,
-			}, c)
+
+			wg.Add(1)
+
+			go func(sink SinkWriter) {
+				writeSink(sink, LogEvent{
+					timestamp: time.Now(),
+					level:     level,
+					message:   message,
+					props:     props,
+				}, resultChan)
+				defer wg.Done()
+			}(s.sink)
 		}
+	}
+
+	go func() {
+		wg.Wait()
+		close(resultChan)
+	}()
+
+	for range resultChan {
 	}
 }
 
 func writeSink(s SinkWriter, e LogEvent, c chan string) {
-	s.WriteTo(e)
+
+	err := s.WriteTo(e)
+	if err != nil {
+		c <- "Error: " + err.Error()
+	} else {
+		c <- "Success"
+	}
 }
