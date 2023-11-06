@@ -15,12 +15,13 @@ logger := golog.LoggingConfiguration().
 	WriteTo(writer).MinimuLevel(golog.Debug).WithFormat("").
 	CreateLogger()
 
-logger.Verbose("Verbose Message", nil)
-logger.Debug("Debug Message", nil)
-logger.Information("Information Message", nil)
-logger.Warn("Warn Message", nil)
-logger.Error("Error Message", errors.New("ERROR"), nil)
-logger.Fatal("Fatal Message", errors.New("FATAL"), nil)
+logger.Verbose("Verbose Message %s", "VERNON")
+	logger.Debug("Debug Message %s %d", "BILLY", 20)
+	logger.Information("Information Message %s", "IMAC")
+	logger.Warn("Warn Message %s %d", "Alice", 30)
+	logger.Error("Error Message", errors.New("SOMETHING WENT WRONG"))
+	logger.Fatal("Fatal Message", errors.New("FATAL ERRROR"))
+
 ```
 ## Table of Contents
 - [Configuration](#Configuration)
