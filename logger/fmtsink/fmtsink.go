@@ -35,26 +35,30 @@ func RenderErrorEvent(e *golog.LogEvent) string {
 	if len(e.Args) > 0 {
 
 		formattedArgs := formatTemplate(e.Message, e.Args...)
-		return fmt.Sprintf(" %v %s \n%s", e.Timestamp.Format("2006-01-02T15:04:05"), formattedArgs, e.Error)
+		return fmt.Sprintf(" %v %s \n%s", e.Timestamp.Format("2006-01-02T15:04:05"), formattedArgs, colorizeError(e.Error))
 	}
-	return fmt.Sprintf(" %v %s \n%s", e.Timestamp.Format("2006-01-02T15:04:05"), e.Message, e.Error)
+	return fmt.Sprintf(" %v %s \n%s", e.Timestamp.Format("2006-01-02T15:04:05"), e.Message, colorizeError(e.Error))
+}
+
+func colorizeError(err *error) string {
+  return ">>>>> " red + error + reset
 }
 
 func colorizeLevel(e *golog.LogEvent) string {
 	switch e.Level {
 	case golog.Verbose:
-		return green + "[" + e.Level.ToString() + "]"
+		return green + "[" + e.Level.ToString() + "]" + reset
 	case golog.Debug:
-		return green + "[" + e.Level.ToString() + "]"
+		return green + "[" + e.Level.ToString() + "]" + reset
 	case golog.Information:
-		return yellow + "[" + e.Level.ToString() + "]"
+		return yellow + "[" + e.Level.ToString() + "]" + reset
 	case golog.Warn:
-		return yellow + "[" + e.Level.ToString() + "]"
+		return yellow + "[" + e.Level.ToString() + "]" + reset
 	case golog.Error:
-		return red + "[" + e.Level.ToString() + "]"
+		return red + "[" + e.Level.ToString() + "]" + reset
 	case golog.Fatal:
-		return red + "[" + e.Level.ToString() + "]"
+		return red + "[" + e.Level.ToString() + "]" + reset
 	default:
-		return red + "[" + e.Level.ToString() + "]"
+		return red + "[" + e.Level.ToString() + "]" + reset
 	}
 }
