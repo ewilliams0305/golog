@@ -21,13 +21,12 @@ logger.Information("Information Message", nil)
 logger.Warn("Warn Message", nil)
 logger.Error("Error Message", errors.New("ERROR"), nil)
 logger.Fatal("Fatal Message", errors.New("FATAL"), nil)
-
+```
 ## Table of Contents
 - [Configuration](#Configuration)
 - [Logger](#Logger)
 - [Writers](#Writers)
 
-```
 # Configuration 
 `golog` requires configuration, to faciliate this the builder pattern is used. 
 The golog configuration API was designed to ensure consumers fall into the pit of success. 
