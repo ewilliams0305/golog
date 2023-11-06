@@ -1,6 +1,6 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/ewilliams0305/golog)](https://goreportcard.com/report/github.com/ewilliams0305/golog)
 
-![Golang Image](https://go.dev/images/gophers/ladder.svg)
+![Golang Image](https://pkg.go.dev/static/shared/gopher/package-search-700x300.jpeg)
 # golog
 A Logging abstraction for go that seperates outputs ```SinkWriter```
 from messages ```Logger```. golog can support multiple logging configurations 
