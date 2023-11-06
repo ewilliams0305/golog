@@ -43,7 +43,7 @@ func (s LogLevel) ToString() string {
 func CreateLevelFromString(s string) LogLevel {
 
 	switch strings.ToUpper(s) {
-	case "VERSOSE":
+	case "VERBOSE":
 		return Verbose
 	case "DEBUG":
 		return Debug

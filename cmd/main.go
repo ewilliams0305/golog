@@ -19,6 +19,9 @@ func main() {
 		WriteTo(sink2).MinimuLevel(golog.Information).
 		CreateLogger()
 
+	// GOLOG provide you runtime log level switching.
+	// When log levels are switched at runtime it will syncronize and revert the level of all sinks.
+	// In the future you will be able to switch the level of each sink independantly.
 	var response string
 
 	fmt.Print("Enter a new Log Level (verbose, debug, info, warn, error, fatal): ")
@@ -27,14 +30,15 @@ func main() {
 	if err != nil {
 		logger.Error("Proceeding with default levels", err)
 	} else {
-		level := golog.CreateLevelFromString(response)
-		logger.SwitchLevel(level)
+
 	}
+	level := golog.CreateLevelFromString(response)
+	logger.SwitchLevel(level)
 
 	logger.Verbose("Verbose Message %s", "VERNON")
 	logger.Debug("Debug Message %s %d", "BILLY", 20)
 	logger.Information("Information Message %s", "IMAC")
-	logger.Warn("Warn Message %s %d", []interface{}{"Alice", 30})
+	logger.Warn("Warn Message %s %d", "Alice", 30)
 	logger.Error("Error Message", errors.New("ERROR"))
 	logger.Fatal("Fatal Message", errors.New("FATAL"))
 
@@ -53,7 +57,7 @@ func formatTemplate(template string, args ...interface{}) string {
 type FmtPrinter struct {
 }
 
-func (f FmtPrinter) WriteTo(message golog.LogEvent) error {
+func (f *FmtPrinter) WriteTo(message golog.LogEvent) error {
 
 	_, e := fmt.Println(message.RenderMessage())
 	return e
@@ -68,7 +72,7 @@ func (f FmtPrinter) WriteTo(message golog.LogEvent) error {
 type FmtPrinterSlow struct {
 }
 
-func (f FmtPrinterSlow) WriteTo(message golog.LogEvent) error {
+func (f *FmtPrinterSlow) WriteTo(message golog.LogEvent) error {
 
 	duration := 2 * time.Second
 	time.Sleep(duration)

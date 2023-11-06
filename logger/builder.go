@@ -59,14 +59,14 @@ func (gl *goLog) Configure(minimuLevel LogLevel, template string) loggerWriter {
 
 func (gl *goLog) WriteTo(sink SinkWriter) createWriters {
 
-	config := loggingSink{
-		sink: sink,
+	writer := &loggingSink{
+		sink: &sink,
 		config: configuration{
 			level:  gl.config.level,
 			format: gl.config.format,
 		},
 	}
-	gl.sinks = append(gl.sinks, config)
+	gl.sinks = append(gl.sinks, writer)
 
 	gl.sinkIndex++
 	return gl

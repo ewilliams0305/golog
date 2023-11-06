@@ -39,13 +39,13 @@ import (
 // pointers to your sinks, and implementations of the loger builder.
 // While tou will never directly access the golog it a critical component of the framework.
 type goLog struct {
-	sinks     []loggingSink
+	sinks     []*loggingSink
 	config    configuration
 	sinkIndex int16
 }
 
 type loggingSink struct {
-	sink   SinkWriter
+	sink   *SinkWriter
 	config configuration
 }
 
@@ -127,8 +127,8 @@ func (gl *goLog) write(message string, level LogLevel, args ...interface{}) {
 
 			wg.Add(1)
 
-			go func(sink SinkWriter) {
-				writeSink(sink, LogEvent{
+			go func(sink *SinkWriter) {
+				writeSink(*sink, LogEvent{
 					Timestamp: time.Now(),
 					Level:     level,
 					Message:   message,
