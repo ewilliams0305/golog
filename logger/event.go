@@ -15,7 +15,7 @@ type LogEvent struct {
 	// The Message templated used to render the displayed log Message.
 	Message string
 	// An optional error to send in the log event.
-	// Errors can optional be rendered seperately from the rest of the log message.
+	// Errors can optional be rendered separately from the rest of the log message.
 	Error error
 	// Optional properties to add to your structured logs.
 	// Properties can include complex objects, simply strings, any

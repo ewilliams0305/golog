@@ -132,7 +132,7 @@ func Test_CreateLogger_ReturnsLogger_DoesntWriteDebug(t *testing.T) {
 
 	// ASSERT
 	if wrote {
-		t.Errorf("Debug message was writen with higher verbostity")
+		t.Errorf("Debug message was written with higher verbostity")
 	}
 
 	wrote = false
@@ -152,7 +152,7 @@ func Test_CreateLogger_ReturnsLogger_DoesntWriteInformation(t *testing.T) {
 
 	// ASSERT
 	if wrote {
-		t.Errorf("Information message was writen with higher verbostity")
+		t.Errorf("Information message was written with higher verbostity")
 	}
 
 	wrote = false
@@ -172,7 +172,7 @@ func Test_CreateLogger_ReturnsLogger_DoesntWriteWarn(t *testing.T) {
 
 	// ASSERT
 	if wrote {
-		t.Errorf("Warn message was writen with higher verbostity")
+		t.Errorf("Warn message was written with higher verbostity")
 	}
 
 	wrote = false
@@ -192,7 +192,7 @@ func Test_CreateLogger_ReturnsLogger_DoesntWriteError(t *testing.T) {
 
 	// ASSERT
 	if wrote {
-		t.Errorf("Error message was writen with higher verbostity")
+		t.Errorf("Error message was written with higher verbostity")
 	}
 
 	wrote = false
@@ -212,7 +212,7 @@ func Test_CreateLogger_ReturnsLogger_ThatWritesVerbose(t *testing.T) {
 
 	// ASSERT
 	if !wrote {
-		t.Errorf("Verbose message was not writen with = || > verbostity")
+		t.Errorf("Verbose message was not written with = || > verbostity")
 	}
 
 	wrote = false
@@ -232,7 +232,7 @@ func Test_CreateLogger_ReturnsLogger_ThatWritesDebug(t *testing.T) {
 
 	// ASSERT
 	if !wrote {
-		t.Errorf("Debug message was not writen with = || > verbostity")
+		t.Errorf("Debug message was not written with = || > verbostity")
 	}
 
 	wrote = false
@@ -252,7 +252,7 @@ func Test_CreateLogger_ReturnsLogger_ThatWritesInformation(t *testing.T) {
 
 	// ASSERT
 	if !wrote {
-		t.Errorf("Information message was not writen with = || > verbostity")
+		t.Errorf("Information message was not written with = || > verbostity")
 	}
 
 	wrote = false
@@ -272,7 +272,7 @@ func Test_CreateLogger_ReturnsLogger_ThatWritesWarn(t *testing.T) {
 
 	// ASSERT
 	if !wrote {
-		t.Errorf("Warn message was not writen with = || > verbostity")
+		t.Errorf("Warn message was not written with = || > verbostity")
 	}
 
 	wrote = false
@@ -292,7 +292,7 @@ func Test_CreateLogger_ReturnsLogger_ThatWritesError(t *testing.T) {
 
 	// ASSERT
 	if !wrote {
-		t.Errorf("Error message was not writen with = || > verbostity")
+		t.Errorf("Error message was not written with = || > verbostity")
 	}
 
 	wrote = false
@@ -312,7 +312,7 @@ func Test_CreateLogger_ReturnsLogger_ThatWritesFatal(t *testing.T) {
 
 	// ASSERT
 	if !wrote {
-		t.Errorf("Fatal message was not writen with = || > verbostity")
+		t.Errorf("Fatal message was not written with = || > verbostity")
 	}
 
 	wrote = false
@@ -326,5 +326,5 @@ type testsink struct {
 func (s *testsink) WriteTo(message LogEvent) error {
 	wrote = true
 	fmt.Printf("%s", message.Message)
-	return fmt.Errorf("%d MESSAGE WAS WRITEN", message.Level)
+	return fmt.Errorf("%d MESSAGE WAS WRITTEN ", message.Level)
 }

@@ -21,7 +21,7 @@ func main() {
 
 	// GOLOG provide you runtime log level switching.
 	// When log levels are switched at runtime it will syncronize and revert the level of all sinks.
-	// In the future you will be able to switch the level of each sink independantly.
+	// In the future you will be able to switch the level of each sink independently.
 	var response string
 
 	fmt.Print("Enter a new Log Level (verbose, debug, info, warn, error, fatal): ")
