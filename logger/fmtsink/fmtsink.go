@@ -2,7 +2,7 @@ package fmtsink
 
 import (
 	"fmt"
- "strings"
+	"strings"
 
 	golog "github.com/ewilliams0305/golog/logger"
 )
@@ -41,17 +41,17 @@ func RenderErrorEvent(e *golog.LogEvent) string {
 	return fmt.Sprintf(" %v %s \n%s", e.Timestamp.Format("2006-01-02T15:04:05"), e.Message, colorizeError(e.Error))
 }
 
-func colorizeError(err *error) string {
-  var sb strings.StringBuilder
-  sb.WriteString(">>>>> ")
-  sb.WriteString(red)
-  sb.WriteString(error)
-  sb.WriteString(reset)
-  return sb.String()
+func colorizeError(err error) string {
+	var sb strings.Builder
+	sb.WriteString(">>>>> ")
+	sb.WriteString(red)
+	sb.WriteString(err.Error())
+	sb.WriteString(reset)
+	return sb.String()
 }
 
 func getLevelColor(l *golog.LogLevel) string {
- switch e.Level {
+	switch *l {
 	case golog.Verbose, golog.Debug:
 		return green
 	case golog.Information, golog.Warn:
@@ -63,12 +63,14 @@ func getLevelColor(l *golog.LogLevel) string {
 	}
 }
 func colorizeLevel(e *golog.LogEvent) string {
-	color:= getLevelColor(e.Level)
- var sb strings.StringBuilder
- 
- sb.WriteString(color)
- sb.WriteString("[")
- sb.WriteString(e.Level.ToString())
- sb.WriteString("]")
- sb.WriteString(reset)
+	color := getLevelColor(&e.Level)
+	var sb strings.Builder
+
+	sb.WriteString(color)
+	sb.WriteString("[")
+	sb.WriteString(e.Level.ToString())
+	sb.WriteString("]")
+	sb.WriteString(reset)
+
+	return sb.String()
 }
