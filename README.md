@@ -64,9 +64,13 @@ Creating custom sink writers compatible with golog is as simple as
 implementing the `SinkWriter` interface. 
 
 ```go
-
+type SinkWriter interface {
+	WriteTo(message LogEvent) error
+}
 ```
 
+Example: the provided /fmtsink implements `SinkWriter`
+and passes the data off to a formatting function. 
 ```go
 type FmtPrinter struct {
 }
@@ -76,4 +80,11 @@ func (f *FmtPrinter) WriteTo(message golog.LogEvent) error {
 	return e
 }
 ```
+
+This new type can now be used during configuration and passed
+into the `WriteTo` step. 
+
+Currently the `WriteTo` functions are executed on a go
+function. The intent here is to prevent blocking when logging to remote servers. 
+In the future this behavior will be configurable during setup. 
 
