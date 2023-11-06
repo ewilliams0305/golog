@@ -6,17 +6,16 @@ import (
 	"time"
 
 	golog "github.com/ewilliams0305/golog/logger"
-	"github.com/ewilliams0305/golog/logger/fmtsink"
+	fmtwriter "github.com/ewilliams0305/golog/writers/fmtsink"
 )
 
 func main() {
 
-	sink1 := &fmtsink.FmtPrinter{}
 	sink2 := &FmtPrinterSlow{}
 
 	logger := golog.LoggingConfiguration().
 		Configure(golog.Verbose, "[%l %t] %m").
-		WriteTo(sink1).MinimuLevel(golog.Verbose).
+		WriteTo(&fmtwriter.FmtPrinter{}).MinimuLevel(golog.Verbose).
 		WriteTo(sink2).MinimuLevel(golog.Information).
 		CreateLogger()
 
