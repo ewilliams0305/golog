@@ -59,5 +59,21 @@ can send data to multiple sinks or a single sink.
 
 ### Logger
 
-### Writer
+### Sink Writers
+Creating custom sink writers compatible with golog is as simple as 
+implementing the `SinkWriter` interface. 
+
+```go
+
+```
+
+```go
+type FmtPrinter struct {
+}
+
+func (f *FmtPrinter) WriteTo(message golog.LogEvent) error {
+	_, e := fmt.Println(colorizeLevel(&message), RenderMessage(&message))
+	return e
+}
+```
 
