@@ -1,6 +1,6 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/ewilliams0305/golog)](https://goreportcard.com/report/github.com/ewilliams0305/golog)
 [![GoDoc](http://godoc.org/github.com/ewilliams0305/golog/logger?status.svg)](http://godoc.org/github.com/ewilliams0305/golog/logger) 
-[![License](https://img.shields.io/badge/licence-BSD--2--Clause-blue.svg)](https://opensource.org/licenses/BSD-2-Clause)
+[![License](https://img.shields.io/badge/licence-MIT-blue.svg)](https://opensource.org/license/mit/)
 [![Coverage report](https://gitlab.com/golang-commonmark/markdown/badges/master/coverage.svg)](https://gitlab.com/golang-commonmark/markdown/commits/master)
 2
 
