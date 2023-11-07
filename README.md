@@ -1,8 +1,7 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/ewilliams0305/golog)](https://goreportcard.com/report/github.com/ewilliams0305/golog)
 [![GoDoc](http://godoc.org/github.com/ewilliams0305/golog/logger?status.svg)](http://godoc.org/github.com/ewilliams0305/golog/logger) 
 [![License](https://img.shields.io/badge/licence-MIT-blue.svg)](https://opensource.org/license/mit/)
-[![Coverage report](https://gitlab.com/golang-commonmark/markdown/badges/master/coverage.svg)](https://github.com/ewilliams0305/golog/commits/master)
-2
+[![Coverage report](https://github.com/ewilliams0305/golog/badges/master/coverage.svg)](https://github.com/ewilliams0305/golog/commits/master)
 
 ![Golang Image](https://pkg.go.dev/static/shared/gopher/package-search-700x300.jpeg)
 # golog
